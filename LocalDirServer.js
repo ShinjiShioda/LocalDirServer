@@ -18,7 +18,7 @@ var handler = function (request, response) {
     var myDate = new Date();
     const logHeader = format("Connect from %s at %s", response.connection.remoteAddress,myDate);   // display Remote ip address
     if(myDate-lastAccess <= 4000 && request.url == lasturl){
-        console.log("%s--Repeat Request in %s. return 404",(myDate-lastAccess),logHeader);
+        console.log("%s--Repeat Request in %s. return 404",logHeader,(myDate-lastAccess));
         response.writeHead(404,{'Content-Type':'text/html'});
         response.end("<html><body>Same Request Repeated.</body></html>");
         return 0;
@@ -71,7 +71,7 @@ if( process.argv.length >= 3  && !isNaN(process.argv[2]) && Number(process.argv[
     // Yes, argv[2] is exist. and it's Number and under 1024
     port=Number(process.argv[2]);
 }
-console.log('Local dir Server Ver.0.8.7\nCopyright 2024 Shinji Shioda');          // Output Version
+console.log('Local dir Server Ver.0.8.8\nCopyright 2024 Shinji Shioda');          // Output Version
 console.log("\n%s %s [<PORT_NUMBER>]",process.argv[0],process.argv[1]);
 console.log("\nAccess http://localhost:%s/<LOCAL_PATH_SEPARATED_BY_SLASH>",port);   // Usage
 var al=http.createServer();                         // Create HTTP server
