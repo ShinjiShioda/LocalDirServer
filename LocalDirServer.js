@@ -10,7 +10,7 @@ var http = require('http');
 var exec = require('child_process').exec;
 var {format} = require('util')
 
-var port = 3000;                                        // listen port
+var port = 6800;                                        // listen port
 var lastAccess =  new Date(2000,1,1,0,0,0);
 var lasturl = "";
 // HTTP Handler
@@ -23,14 +23,14 @@ var handler = function (request, response) {
         response.end("<html><body>Same Request Repeated.</body></html>");
         return 0;
     }
-    lastAccess=myDate;
-    lasturl=request.url;
     if(request.url == "/favicon.ico") {
         console.log("%s--favicon Reqested.return 404",logHeader)
         response.writeHead(404);
         response.end();
         return 0;
     }
+    lastAccess=myDate;
+    lasturl=request.url;
     response.writeHead(200,{'Content-Type':'text/html'});                   // response status code and content type
     // return html body for close it by javascript. "HELLO" is important to suppress error.
     // If it's not here you'll get an error.
