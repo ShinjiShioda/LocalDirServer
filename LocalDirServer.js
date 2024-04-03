@@ -9,7 +9,6 @@ var path = require('path');
 var http = require('http');
 var exec = require('child_process').exec;
 var util = require('util');
-var {format} = require('util')
 
 var port = 6800;                                        // listen port
 var lastAccess =  new Date(2000,1,1,0,0,0);
@@ -36,7 +35,6 @@ var handler = function (request, response) {
     // return html body for close it by javascript. "HELLO" is important to suppress error.
     // If it's not here you'll get an error.
     response.end("<html><body onload=\"open(location, '_self').close();\">HELLO</body></html>");
-    //response.end("<html><body onload=\"setTimeout(()=>open(location, '_self').close(), 500);\">HELLO</body></html>");
     
     // check remote address is ipv4/v6 local address '::1' or '::ffff:127.0.0.1'
     // Not allow my real ip address(like 192.168.0.100). This is guard to use real ip address in URL
@@ -45,12 +43,9 @@ var handler = function (request, response) {
         console.warn("%s--Error not 'localhost'!",logHeader);
         return 0;
     }
-    // console.log(util.inspect(request,false,null));
     var arg = (request.url).substr(1);                  // split path from URL
-    arg = decodeURIComponent(arg);
-    //console.log("arg:%s",arg);
+    arg = decodeURIComponent(arg);                      // decode %-Encording
     arg = arg.replaceAll('/','\\');                     // convert URL path to Windows Path
-    //console.log("Path:%s",arg);
     fs.stat(arg, function (err, stats) {                // with path
         if (err) {                                      // if path not exist
             // path not exist. Error & exit
@@ -76,9 +71,10 @@ if( process.argv.length >= 3  && !isNaN(process.argv[2]) && Number(process.argv[
     // Yes, argv[2] is exist. and it's Number and under 1024
     port=Number(process.argv[2]);
 }
-console.log('Local dir Server Ver.0.9.1\nCopyright 2024 Shinji Shioda');          // Output Version
-console.log("\n%s %s [<PORT_NUMBER>]",process.argv[0],process.argv[1]);
-console.log("\nAccess http://localhost:%s/<LOCAL_PATH_SEPARATED_BY_SLASH>",port);   // Usage
+console.log('Local dir Server Ver.0.9.2\nCopyright 2024 Shinji Shioda');          // Output Version
+console.log("\n%s %s [<PORT_NUMBER>]",process.argv[0],process.argv[1]);             // Usage
+console.log("\nAccess http://localhost:%s/<LOCAL_PATH_SEPARATED_BY_SLASH>",port);   // URL pattern
+console.log("Access http://localhost:%s/<%%-ENCORDING_WINDOWS_LOCAL_PATH>",port);   // URL pattern
 var al=http.createServer();                         // Create HTTP server
 al.addListener("request",handler);                  // add Handler
 al.listen(port);                                    // set TCP port and start it
