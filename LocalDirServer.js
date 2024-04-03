@@ -8,6 +8,7 @@ var fs = require('fs');
 var path = require('path');
 var http = require('http');
 var exec = require('child_process').exec;
+var util = require('util');
 var {format} = require('util')
 
 var port = 6800;                                        // listen port
@@ -44,12 +45,16 @@ var handler = function (request, response) {
         console.warn("%s--Error not 'localhost'!",logHeader);
         return 0;
     }
+    // console.log(util.inspect(request,false,null));
     var arg = (request.url).substr(1);                  // split path from URL
+    arg = decodeURIComponent(arg);
+    //console.log("arg:%s",arg);
     arg = arg.replaceAll('/','\\');                     // convert URL path to Windows Path
+    //console.log("Path:%s",arg);
     fs.stat(arg, function (err, stats) {                // with path
         if (err) {                                      // if path not exist
             // path not exist. Error & exit
-            console.warn("%s--Error:Path not found. %s",logHeader,request.url);
+            console.warn("%s--Error:Path not found. %s",logHeader,arg);
         } else {
             // path exist
             if (stats.isDirectory()) {                      // check path is directory
@@ -71,7 +76,7 @@ if( process.argv.length >= 3  && !isNaN(process.argv[2]) && Number(process.argv[
     // Yes, argv[2] is exist. and it's Number and under 1024
     port=Number(process.argv[2]);
 }
-console.log('Local dir Server Ver.0.9.0\nCopyright 2024 Shinji Shioda');          // Output Version
+console.log('Local dir Server Ver.0.9.1\nCopyright 2024 Shinji Shioda');          // Output Version
 console.log("\n%s %s [<PORT_NUMBER>]",process.argv[0],process.argv[1]);
 console.log("\nAccess http://localhost:%s/<LOCAL_PATH_SEPARATED_BY_SLASH>",port);   // Usage
 var al=http.createServer();                         // Create HTTP server
