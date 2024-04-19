@@ -72,7 +72,7 @@ if( process.argv.length >= 3  && !isNaN(process.argv[2]) && Number(process.argv[
     // Yes, argv[2] is exist. and it's Number and under 1024
     port=Number(process.argv[2]);
 }
-console.log('Local dir Server Ver.0.9.2\nCopyright 2024 Shinji Shioda');          // Output Version
+console.log('Local dir Server Ver.0.9.3\nCopyright 2024 Shinji Shioda');          // Output Version
 console.log("\n%s %s [<PORT_NUMBER>]",process.argv[0],process.argv[1]);             // Usage
 console.log("\nAccess http://localhost:%s/<LOCAL_PATH_SEPARATED_BY_SLASH>",port);   // URL pattern
 console.log("Access http://localhost:%s/<%%-ENCORDING_WINDOWS_LOCAL_PATH>",port);   // URL pattern
