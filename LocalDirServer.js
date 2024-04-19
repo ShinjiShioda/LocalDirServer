@@ -9,6 +9,7 @@ var path = require('path');
 var http = require('http');
 var exec = require('child_process').exec;
 var util = require('util');
+var {format} = require('util')
 
 var port = 6800;                                        // listen port
 var lastAccess =  new Date(2000,1,1,0,0,0);
